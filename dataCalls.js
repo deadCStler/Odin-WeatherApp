@@ -29,6 +29,8 @@ function processData(responseObj) {
     condition: element.day.condition,
   }));
 
+  obj.location = `${responseObj.location.name}, ${responseObj.location.region}, ${responseObj.location.country}`;
+
   return obj;
 }
 
@@ -43,7 +45,7 @@ async function fetchData(location) {
     }
     return await obj.json();
   } catch (error) {
-    console.log(`No matching location found for ${location}`);
+    alert(`No matching location found for ${location}`);
   }
 }
 

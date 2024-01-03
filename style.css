@@ -1,24 +1,119 @@
-*{
-    padding: 0;
-    margin: 0;
-    border: solid 2px black;
+@import url("https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat:wght@300&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Kanit", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-body{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: linear-gradient(#003049,#8FB8F9,#7CAAFB,#FEFEFE,#FEFEFE,#FEFEFE,#D3E3F8,#DEC17C,#FCBF49,#F77F00);
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(
+    #003049,
+    #8fb8f9,
+    #7caafb,
+    #fefefe,
+    #fefefe,
+    #fefefe,
+    #d3e3f8,
+    #dec17c,
+    #fcbf49,
+    #f77f00
+  );
+  background-attachment: fixed;
 }
 
-#main{
-    height: 95vh;
-    width: 80vw;
-    display: grid;
-    grid-template-rows: 0.5fr 2fr 0.75fr 1fr 1fr 0.75fr;
+#main {
+  height: 95vh;
+  width: 80vw;
+  display: grid;
+  gap: 10px;
+  grid-template-rows: 0.5fr 1fr minmax(185px, 1fr) 1fr 1fr 1fr;
 }
 
-.hourly{
-    display: grid;
+#main>div{
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+input{
+  width: 350px;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+#searchCity {
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.todayBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;  border-radius: 10px;
+
+}
+
+.todayBody > div {
+  display: flex;
+  gap: 20px;
+  font-size: 22px;
+}
+
+.currTemp {
+  font-size: 60px;
+}
+
+.hourlyBody::-webkit-scrollbar {
+  display: none;
+}
+
+.hourlyBody {
+  width: 80vw;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.hourlyBody > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.threeDayForecastBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
+
+.currentOthersBody,.sunBody{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.todayHeading{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

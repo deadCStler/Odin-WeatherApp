@@ -23,7 +23,6 @@ const createForm = function () {
 };
 
 function displayData(dataJson) {
-  console.log(dataJson);
 
   const today = document.querySelector(".today");
   const hourly = document.querySelector(".hourly");
@@ -37,16 +36,36 @@ function displayData(dataJson) {
   currentOthers.innerHTML = "";
   sun.innerHTML = "";
 
+  //DOM for current details
+
+  let todayHeading = document.createElement("div");
+  todayHeading.innerHTML = `<h2>Now</h2> <div>${dataJson.location}</div>`;
+  todayHeading.classList.add('todayHeading');
+
+  let todayBody = document.createElement("div");
+  todayBody.classList.add("todayBody");
+
   let currTemp = document.createElement("h1");
-  currTemp.textContent = dataJson.temp_c;
+  currTemp.textContent = `${dataJson.temp_c}°`;
   currTemp.classList.add("currTemp");
 
-  today.appendChild(currTemp);
+  todayBody.appendChild(currTemp);
 
   let highlow = document.createElement("div");
-  highlow.innerHTML = `<p>High: ${dataJson.threeDay[0].maxtemp_c}</p><p>Low: ${dataJson.threeDay[0].mintemp_c}</p>`;
+  highlow.innerHTML = `<p>High: ${dataJson.threeDay[0].maxtemp_c}°</p><p>Low: ${dataJson.threeDay[0].mintemp_c}°</p>`;
 
-  today.appendChild(highlow);
+  todayBody.appendChild(highlow);
+
+  today.appendChild(todayHeading);
+  today.appendChild(todayBody);
+
+  //DOM for hourly forecast
+
+  let hourlyHeading = document.createElement("h2");
+  hourlyHeading.textContent = "Hourly Forecast";
+
+  let hourlyBody = document.createElement("div");
+  hourlyBody.classList.add("hourlyBody");
 
   dataJson.hourly.forEach((element) => {
     let div = document.createElement("div");
@@ -55,7 +74,7 @@ function displayData(dataJson) {
     let time = document.createElement("div");
     let img = document.createElement("img");
 
-    temp.textContent = element.temp_c;
+    temp.textContent = `${element.temp_c}°`;
     time.textContent = element.time;
     img.src = element.condition.icon;
 
@@ -63,8 +82,19 @@ function displayData(dataJson) {
     div.appendChild(img);
     div.appendChild(time);
 
-    // hourly.appendChild(div);
+    hourlyBody.appendChild(div);
   });
+
+  hourly.appendChild(hourlyHeading);
+  hourly.appendChild(hourlyBody);
+
+  //DOM for 3 day forecast
+
+  let threeDayForecastHeading = document.createElement("h2");
+  threeDayForecastHeading.textContent = "3-day Forecast";
+
+  let threeDayForecastBody = document.createElement("div");
+  threeDayForecastBody.classList.add("threeDayForecastBody");
 
   dataJson.threeDay.forEach((element) => {
     let div = document.createElement("div");
@@ -75,30 +105,52 @@ function displayData(dataJson) {
 
     date.textContent = element.date;
     img.src = element.condition.icon;
-    temp.innerHTML = `${element.maxtemp_c}/${element.mintemp_c}`;
+    temp.innerHTML = `${element.maxtemp_c}°/${element.mintemp_c}°`;
 
     div.appendChild(date);
     div.appendChild(img);
     div.appendChild(temp);
 
-    // threeDayForecast.appendChild(div);
+    threeDayForecastBody.appendChild(div);
   });
+
+  threeDayForecast.appendChild(threeDayForecastHeading);
+  threeDayForecast.appendChild(threeDayForecastBody);
+
+  //DOM for current conditions
+
+  let currentOthersHeading = document.createElement("h2");
+  currentOthersHeading.textContent = "Current Conditions";
+
+  let currentOthersBody = document.createElement("div");
+  currentOthersBody.classList.add("currentOthersBody");
 
   let wind = document.createElement("div");
   wind.classList.add("wind");
-  wind.innerHTML = `<p>${dataJson.wind_kph}</p><p>${dataJson.wind_dir}</p>`;
+  wind.innerHTML = `<p>Wind: ${dataJson.wind_kph}km/h from ${dataJson.wind_dir}</p>`;
 
   let humidity = document.createElement("div");
   humidity.classList.add("humidity");
-  humidity.textContent = dataJson.humidity;
+  humidity.textContent = `Humidity: ${dataJson.humidity}%`;
 
   let uv = document.createElement("div");
   uv.classList.add("uv");
-  uv.textContent = dataJson.uv;
+  uv.textContent = `UV Index: ${dataJson.uv}`;
 
-  currentOthers.appendChild(wind);
-  currentOthers.appendChild(humidity);
-  currentOthers.appendChild(uv);
+  currentOthersBody.appendChild(wind);
+  currentOthersBody.appendChild(humidity);
+  currentOthersBody.appendChild(uv);
+
+  currentOthers.appendChild(currentOthersHeading);
+  currentOthers.appendChild(currentOthersBody);
+
+  //DOM for sunrise & sunset
+
+  let sunHeading = document.createElement("h2");
+  sunHeading.textContent = "Sunrise & Sunset";
+
+  let sunBody = document.createElement("div");
+  sunBody.classList.add("sunBody");
 
   let sunrise = document.createElement("div");
   sunrise.textContent = `Sunrise: ${dataJson.threeDay[0].sunrise}`;
@@ -108,8 +160,11 @@ function displayData(dataJson) {
   sunset.textContent = `Sunset: ${dataJson.threeDay[0].sunset}`;
   sunset.classList.add("sunset");
 
-  sun.appendChild(sunrise);
-  sun.appendChild(sunset);
+  sunBody.appendChild(sunrise);
+  sunBody.appendChild(sunset);
+
+  sun.appendChild(sunHeading);
+  sun.appendChild(sunBody);
 }
 
 async function getInput() {
@@ -118,13 +173,15 @@ async function getInput() {
     alert("Invalid Input");
     return;
   }
+  else if (!/^[a-zA-Z\s]+$/.test(input.value.trim())) {
+    alert("Input must contain only alphabetic characters");
+    return;
+  }
   const dataJson = await getCityData(input.value);
   displayData(dataJson);
 }
 
-function updateToday() {}
-
-export const dom = function () {
+const dom = (function () {
   const main = document.querySelector("#main");
 
   let today = document.createElement("div");
@@ -141,16 +198,15 @@ export const dom = function () {
 
   let sun = document.createElement("div");
   sun.classList.add("sun");
-
   main.appendChild(createForm());
-  main.appendChild(today);
-  main.appendChild(hourly);
-  main.appendChild(threeDayForecast);
-  main.appendChild(currentOthers);
-  main.appendChild(sun);
 
   document.querySelector("#searchCity").addEventListener("click", (e) => {
     e.preventDefault();
+    main.appendChild(today);
+    main.appendChild(hourly);
+    main.appendChild(threeDayForecast);
+    main.appendChild(currentOthers);
+    main.appendChild(sun);
     getInput();
   });
-};
+})();
