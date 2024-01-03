@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+    border: solid 2px black;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(#003049,#8FB8F9,#7CAAFB,#FEFEFE,#FEFEFE,#FEFEFE,#D3E3F8,#DEC17C,#FCBF49,#F77F00);
+}
+
+#main{
+    height: 95vh;
+    width: 80vw;
+    display: grid;
+    grid-template-rows: 0.5fr 2fr 0.75fr 1fr 1fr 0.75fr;
+}
+
+.hourly{
+    display: grid;
+}
